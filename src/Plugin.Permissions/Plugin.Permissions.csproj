@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid80;MonoAndroid81;MonoAndroid90;MonoAndroid10.0;Xamarin.iOS10;Xamarin.TVOS10;</TargetFrameworks>
+		<TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid80;MonoAndroid81;MonoAndroid90;MonoAndroid10.0;Xamarin.iOS10;Xamarin.TVOS10;netcoreapp3.1</TargetFrameworks>
 		<TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.16299;</TargetFrameworks>
 	</PropertyGroup>
 	
@@ -56,7 +56,7 @@
 	
 	<ItemGroup>
     <None Include="..\..\nuget\readme.txt" PackagePath="readme.txt" Pack="true" />
-		<PackageReference Include="Xamarin.Essentials" Version="1.5.2"/>
+		<PackageReference Include="Xamarin.Essentials" Version="1.5.2" Condition="!$(TargetFramework.StartsWith('netcoreapp'))" />
 		<Compile Include="**\*.shared.cs" />
 	</ItemGroup>
 
@@ -69,6 +69,10 @@
 
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
 		<Compile Include="**\*.android.cs" />		
+	</ItemGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
+		<Compile Include="**\*.wpf.cs" />
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid')) And '$(TargetFramework)' != 'MonoAndroid10.0'">
